@@ -66,16 +66,15 @@ def date(tommorow):
 #             text = f'Завтра {shedule_name} {parity_name}ой недели '
 #         return shedule['img'], text
 
-
-
 #aditionally: 0 -tommorow, 1 - понедельник, 2 -вторник и т.д
-дописать метод 
 def api(day, parity, additionally):
     if additionally == 1: 
         day, parity = date(1)
-        response = requests.get(f'http://127.0.0.1:8000/api/v1/weekday/{day}/?parity={parity}')
-        # print(response.text)
-        weekday = json.loads(response.text, object_hook=Weekday)
+        response = requests.get(f'http://127.0.0.1:8000/api/v1/weekday/?name={day}&parity={parity}')
+        weekday = json.loads(response.text[1:-1], object_hook=Weekday)
+        return weekday
     if additionally == 1:
         pass
-    return weekday
+
+
+

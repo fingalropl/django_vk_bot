@@ -7,7 +7,7 @@ class WeekdayViewSet(viewsets.ModelViewSet):
     queryset = Weekday.objects.all()
     serializer_class = WeekdaySerializers
     filter_backends = (DjangoFilterBackend,)
-    filterset_fields = ('id', 'parity') 
+    filterset_fields = ('id', 'parity','name') 
 
 
 

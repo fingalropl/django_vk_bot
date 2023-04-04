@@ -39,6 +39,12 @@ class Lesson(models.Model):
         max_length=200,
         verbose_name='Препод',
     )
+    place = models.CharField(
+        max_length=200,
+        verbose_name='Корпус-аудитория'
+    )
+
+
     class Meta:
         verbose_name = 'Дисциплина'
         verbose_name_plural = 'Дисциплины'
@@ -58,15 +64,11 @@ class Weekday(models.Model):
         choices=PARITY_CHOICES,
         verbose_name='Четность дня недели',
     )
-    # disciplines = models.ManyToManyField(
-    #     Lesson,
-    # )
     first_lesson = models.ForeignKey(
         Lesson,
         verbose_name='Первая пара',
         related_name='first_lesson',
         on_delete= models.CASCADE,
-
     )
     second_lesson = models.ForeignKey(
         Lesson,
