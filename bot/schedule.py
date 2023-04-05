@@ -3,27 +3,11 @@ from datetime import timedelta
 import requests
 from dataclasses import dataclass
 import json
-
+from constans import PARITY_NAME,NAME_WEEKDAY_CHOICES,TYPE_CHOICES
 class Weekday:
   def __init__( self, dict ):
       vars(self).update( dict )
     
-# SHEDULE = {1 : {0 : { 'img' : 'photo-215622029_457239125', 'weekday' : 'понедельник'},
-#                 1 : { 'img' : 'photo-215622029_457239124', 'weekday' : 'вторник'},
-#                 2 : { 'img' : 'photo-215622029_457239126', 'weekday' : 'среда'},
-#                 3 : { 'img' : 'photo-215622029_457239127', 'weekday' : 'четверг'},
-#                 4 : { 'img' : 'photo-215622029_457239120', 'weekday' : 'пятница нечетной недели, кайфуй. Вот расписание на следующий четный понедельник!'},
-#                 5 : { 'img' : 'photo-215622029_457239120', 'weekday' : 'суббота нечетной недели, кайфуй. Вот расписание на следующий четный понедельник!'},
-#                 6 : { 'img' : 'photo-215622029_457239120', 'weekday' : 'воскресение нечетной недели, кайфуй. Вот расписание на следующий четный понедельник!'}},
-#            0 : {0 : { 'img' : 'photo-215622029_457239120', 'weekday' : 'понедельник'},
-#                 1 : { 'img' : 'photo-215622029_457239121', 'weekday' : 'вторник'},
-#                 2 : { 'img' : 'photo-215622029_457239122', 'weekday' : 'среда'},
-#                 3 : { 'img' : 'photo-215622029_457239123', 'weekday' : 'четверг'},
-#                 4 : { 'img' : 'photo-215622029_457239125', 'weekday' : 'пятница четной недели, кайфуй. Вот расписание на следующий нечетный понедельник!'},
-#                 5 : { 'img' : 'photo-215622029_457239125', 'weekday' : 'суббота четной недели, кайфуй. Вот расписание на следующий нечетный понедельник!'},
-#                 6 : { 'img' : 'photo-215622029_457239125', 'weekday' : 'воскресение четной недели, кайфуй. Вот расписание на следующий нечетный понедельник!'}}}
-# PARITY_NAME = {1 : 'нечетн',
-#                0 : 'четн'}
 
 
 def date(tommorow):
@@ -38,7 +22,6 @@ def date(tommorow):
     begin = dt.date(2023,2,6)
     delta = (now - begin).days
     parity =  (delta // 7) % 2 
-    # print(f'Четность: {parity}, День недели: {weekday}') #Принт для проверки
     return weekday, parity
 
 
@@ -67,14 +50,21 @@ def date(tommorow):
 #         return shedule['img'], text
 
 #aditionally: 0 -tommorow, 1 - понедельник, 2 -вторник и т.д
-def api(day, parity, additionally):
-    if additionally == 1: 
+def apis(day, parity, additionally):
+    asd = ' '
+    if additionally == 0: 
         day, parity = date(1)
-        response = requests.get(f'http://127.0.0.1:8000/api/v1/weekday/?name={day}&parity={parity}')
-        weekday = json.loads(response.text[1:-1], object_hook=Weekday)
-        return weekday
-    if additionally == 1:
-        pass
+        asd = 'Завтра'
+    response = requests.get(f'http://127.0.0.1:8000/api/v1/weekday/?name={day}&parity={parity}')
+    weekday = json.loads(response.text[1:-1], object_hook=Weekday)
+    text = (f'{asd} {NAME_WEEKDAY_CHOICES[day]} {PARITY_NAME[parity]} неделя'
+            f'\n\n Первая пара - {TYPE_CHOICES[int(weekday.first_lesson[0].type)]} {weekday.first_lesson[0].name}, преподаватель {weekday.first_lesson[0].teacher}, {weekday.first_lesson[0].place}'
+            f'\n\n Вторая пара - {TYPE_CHOICES[int(weekday.second_lesson[0].type)]} {weekday.second_lesson[0].name}, преподаватель {weekday.second_lesson[0].teacher}, {weekday.second_lesson[0].place}'
+            f'\n\n Третья пара - {TYPE_CHOICES[int(weekday.third_lesson[0].type)]} {weekday.third_lesson[0].name}, преподаватель {weekday.third_lesson[0].teacher}, {weekday.third_lesson[0].place}'
+            f'\n\n Четвертая пара - {TYPE_CHOICES[int(weekday.fourth_lesson[0].type)]} {weekday.fourth_lesson[0].name}, преподаватель {weekday.fourth_lesson[0].teacher}, {weekday.fourth_lesson[0].place}'
+            f'\n\n Пятая пара - {TYPE_CHOICES[int(weekday.fifth_lesson[0].type)]} {weekday.fifth_lesson[0].name}, преподаватель {weekday.fifth_lesson[0].teacher}, {weekday.fifth_lesson[0].place}')
+    return text
+
 
 
 

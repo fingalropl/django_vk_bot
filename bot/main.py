@@ -6,8 +6,9 @@ from dotenv import load_dotenv
 from vk_api.bot_longpoll import VkBotEventType, VkBotLongPoll
 
 # from Apidogs import prepare_img
-from schedule import get_shedule, api
+from schedule import apis 
 from text_command import COMMANDS
+from constans import NAME_WEEKDAY_CHOICES, PARITY_NAME
 load_dotenv()
 
 VK_TOKEN = os.getenv('VK_TOKEN')
@@ -68,19 +69,23 @@ def off_button(id, but_text):
     api.messages.send(chat_id = id, message = 'Нажмите, на кнопку "Вырубить кнопку", чтобы отключить старую кнопку.', keyboard = json_keyboard(but_text), random_id = 0)
 
 
-#здесь будет подготовка строки даныых из объекта
-def prepare_text(weekday):
-        print(weekday.first_lesson[0].name)
-    
-
 def distir_schedule(msg, id):
     word = msg.split()
+    # print(word[-1])
     if 'завтра' in word:
-        weekday = api(0,0,1)
-        prepare_text(weekday)
+        pretext = apis(0,0,0) 
+        send_text(id=id, text=pretext)
     else:
-        pass
-     
+        day_word = str(word[-1])
+        day = int(str({i for i in NAME_WEEKDAY_CHOICES if NAME_WEEKDAY_CHOICES[i]==day_word})[1:-1])
+        parity_word = word[-2]
+        print(parity_word)
+        parity = int(str({i for i in PARITY_NAME if PARITY_NAME[i]==parity_word})[1:-1])
+        print(day, parity)
+        pretext = apis(day,parity,1)
+        send_text(id=id,text=pretext)
+        
+        
 
 def distributor(msg, id):
         if msg == 'привет':
@@ -97,7 +102,7 @@ def main():
     for event in longpoll.listen():
         if event.type == VkBotEventType.MESSAGE_NEW and event.from_chat:
             msg = event.object['message']['text'].lower()
-            print(event)
+            # print(event)
             id = event.chat_id
             try:
                 name,msg = msg.split(',')
