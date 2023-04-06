@@ -58,11 +58,11 @@ def apis(day, parity, additionally):
     response = requests.get(f'http://127.0.0.1:8000/api/v1/weekday/?name={day}&parity={parity}')
     weekday = json.loads(response.text[1:-1], object_hook=Weekday)
     text = (f'{asd} {NAME_WEEKDAY_CHOICES[day]} {PARITY_NAME[parity]} неделя'
-            f'\n\n Первая пара - {TYPE_CHOICES[int(weekday.first_lesson[0].type)]} {weekday.first_lesson[0].name}, преподаватель {weekday.first_lesson[0].teacher}, {weekday.first_lesson[0].place}'
-            f'\n\n Вторая пара - {TYPE_CHOICES[int(weekday.second_lesson[0].type)]} {weekday.second_lesson[0].name}, преподаватель {weekday.second_lesson[0].teacher}, {weekday.second_lesson[0].place}'
-            f'\n\n Третья пара - {TYPE_CHOICES[int(weekday.third_lesson[0].type)]} {weekday.third_lesson[0].name}, преподаватель {weekday.third_lesson[0].teacher}, {weekday.third_lesson[0].place}'
-            f'\n\n Четвертая пара - {TYPE_CHOICES[int(weekday.fourth_lesson[0].type)]} {weekday.fourth_lesson[0].name}, преподаватель {weekday.fourth_lesson[0].teacher}, {weekday.fourth_lesson[0].place}'
-            f'\n\n Пятая пара - {TYPE_CHOICES[int(weekday.fifth_lesson[0].type)]} {weekday.fifth_lesson[0].name}, преподаватель {weekday.fifth_lesson[0].teacher}, {weekday.fifth_lesson[0].place}')
+            f'\n\n 1 - {TYPE_CHOICES[int(weekday.first_lesson[0].type)]} {weekday.first_lesson[0].name}, преподаватель {weekday.first_lesson[0].teacher}, {weekday.first_lesson[0].place}'
+            f'\n\n 2 - {TYPE_CHOICES[int(weekday.second_lesson[0].type)]} {weekday.second_lesson[0].name}, преподаватель {weekday.second_lesson[0].teacher}, {weekday.second_lesson[0].place}'
+            f'\n\n 3 - {TYPE_CHOICES[int(weekday.third_lesson[0].type)]} {weekday.third_lesson[0].name}, преподаватель {weekday.third_lesson[0].teacher}, {weekday.third_lesson[0].place}'
+            f'\n\n 4 - {TYPE_CHOICES[int(weekday.fourth_lesson[0].type)]} {weekday.fourth_lesson[0].name}, преподаватель {weekday.fourth_lesson[0].teacher}, {weekday.fourth_lesson[0].place}'
+            f'\n\n 5 - {TYPE_CHOICES[int(weekday.fifth_lesson[0].type)]} {weekday.fifth_lesson[0].name}, преподаватель {weekday.fifth_lesson[0].teacher}, {weekday.fifth_lesson[0].place}')
     return text
 
 
