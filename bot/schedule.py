@@ -55,6 +55,9 @@ def apis(day, parity, additionally):
     if additionally == 0: 
         day, parity = date(1)
         asd = 'Завтра'
+    if additionally == 1: 
+        day, parity = date(0)
+        asd = 'Сегодня'
     response = requests.get(f'http://127.0.0.1:8000/api/v1/weekday/?name={day}&parity={parity}')
     weekday = json.loads(response.text[1:-1], object_hook=Weekday)
     text = (f'{asd} {NAME_WEEKDAY_CHOICES[day]} {PARITY_NAME[parity]} неделя'

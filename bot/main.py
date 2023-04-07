@@ -75,6 +75,9 @@ def distir_schedule(msg, id):
     if 'завтра' in word:
         pretext = apis(0,0,0) 
         send_text(id=id, text=pretext)
+    elif 'сегодня' in word:
+        pretext = apis(0,0,1)
+        send_text(id=id, text=pretext)
     else:
         day_word = str(word[-1])
         day = int(str({i for i in NAME_WEEKDAY_CHOICES if NAME_WEEKDAY_CHOICES[i]==day_word})[1:-1])
